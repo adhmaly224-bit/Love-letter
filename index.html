@@ -268,6 +268,21 @@
     max-width:300px;
   }
 
+  .letter-title-2{
+    font-family: var(--display);
+    font-size:22px;
+    color:var(--rose-deep);
+    margin-top:6px;
+  }
+  .letter-body-2{
+    font-family: var(--body-font);
+    font-style:italic;
+    font-size:15px;
+    line-height:2;
+    color:var(--text-dark);
+    max-width:300px;
+  }
+
   .player{
     display:flex;
     align-items:center;
@@ -353,12 +368,23 @@
       بحبك ❤️
     </p>
 
+    <h3 class="letter-title-2">يا رودي</h3>
+    <p class="letter-body-2">
+      يا رودي، اسمك لوحده بقى فرحة بتحصلي كل ما اقوله.<br>
+      انتي مش بس حبيبتي، انتي أحلى حاجة حصلت في حياتي.<br>
+      كل يوم بصحى وانا فاكرك، وكل ليلة بنام وانتي آخر حاجة في بالي.<br>
+      ضحكتك بتنسيني أي تعب، وصوتك بيبقى أحلى حاجة في يومي.<br>
+      يا رودي، معاكي حسيت إن الدنيا فعلاً بتستاهل تتعاش.<br>
+      نفسي تعرفي إني ممتن لكل لحظة بنعيشها مع بعض،<br>
+      وإني هفضل جنبك مهما كان، لأنك ببساطة أجمل حاجة عندي.<br>
+      بحبك يا رودي، وهفضل بحبك أكتر كل يوم 🌹
+    </p>
+
     <div class="player">
       <button id="playBtn">▶</button>
       <div class="song-info">
         <div class="song-title">حبيبي ليه</div>
         <div class="song-sub">TUL8TE - توو ليت</div>
-      </div>
       </div>
     </div>
     <audio id="audio" src="song.mp3" loop></audio>
@@ -387,6 +413,11 @@
       setTimeout(() => {
         lockScreen.classList.add('hide');
         loveScreen.classList.add('show');
+        audio.play().then(() => {
+          playBtn.textContent = '⏸';
+        }).catch(() => {
+          playBtn.textContent = '▶';
+        });
       }, 500);
     } else {
       input.classList.remove('shake');
