@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اليك انت فقط ❤️</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rakkas&family=Amiri:ital@0;1&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --cream:        #FBF3EA;
+    --cream-deep:    #F1E2D2;
+    --envelope:      #CDA679;
+    --envelope-dark: #AD8558;
+    --envelope-light:#E4C9A4;
+    --rose:          #A9584B;
+    --rose-deep:     #8B4038;
+    --text-dark:     #4A362E;
+    --text-soft:     #8A7368;
+    --flower-pink:   #E7A9B3;
+    --flower-pink-2: #F3CBD3;
+    --flower-white:  #FEFBF7;
+    --gold:          #C9A227;
+
+    --display: 'Rakkas', cursive;
+    --body-font: 'Amiri', serif;
+    --ui-font: 'Tajawal', sans-serif;
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+      radial-gradient(circle at 20% 20%, var(--cream-deep), transparent 60%),
+      radial-gradient(circle at 80% 80%, var(--cream-deep), transparent 60%),
+      var(--cream);
+    font-family: var(--ui-font);
+    color: var(--text-dark);
+    padding: 24px;
+    overflow-x:hidden;
+  }
+
+  .stage{
+    position:relative;
+    width:100%;
+    max-width:380px;
+    min-height:560px;
+  }
+
+  #lockScreen{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:28px;
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  #lockScreen.hide{
+    opacity:0;
+    transform: scale(.92);
+    pointer-events:none;
+  }
+
+  .eyebrow{
+    font-family: var(--ui-font);
+    letter-spacing:.35em;
+    font-size:12px;
+    color:var(--text-soft);
+    font-weight:700;
+  }
+
+  .title{
+    font-family: var(--display);
+    font-size:38px;
+    color:var(--rose-deep);
+    text-align:center;
+    line-height:1.3;
+    margin: -12px 0 0 0;
+  }
+
+  .envelope{
+    position:relative;
+    width:230px;
+    height:150px;
+    perspective:700px;
+  }
+  .env-back{
+    position:absolute;
+    inset:0;
+    background: linear-gradient(160deg, var(--envelope-light), var(--envelope));
+    border-radius:8px;
+    box-shadow: 0 18px 30px -12px rgba(139,64,56,.35);
+  }
+  .env-front-left, .env-front-right{
+    position:absolute;
+    bottom:0;
+    width:0; height:0;
+    border-bottom: 78px solid var(--envelope-light);
+    z-index:2;
+  }
+  .env-front-left{
+    left:0;
+    border-right: 115px solid transparent;
+    border-bottom-color: #E9CFA9;
+  }
+  .env-front-right{
+    right:0;
+    border-left: 115px solid transparent;
+    border-bottom-color: #DEBB8E;
+  }
+  .env-flap{
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:0;
+    border-left: 115px solid transparent;
+    border-right: 115px solid transparent;
+    border-top: 82px solid var(--envelope-dark);
+    transform-origin: top center;
+    transform-style: preserve-3d;
+    backface-visibility:hidden;
+    transition: transform .9s cubic-bezier(.6,.1,.3,1);
+    z-index:3;
+  }
+  .envelope.open .env-flap{
+    transform: rotateX(180deg);
+  }
+  .seal{
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    width:46px; height:46px;
+    border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, #C56A5A, var(--rose-deep));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--cream);
+    font-size:18px;
+    z-index:4;
+    box-shadow: 0 4px 8px rgba(0,0,0,.25);
+    transition: opacity .4s ease, transform .4s ease;
+  }
+  .envelope.open .seal{
+    opacity:0;
+    transform:translate(-50%,-50%) scale(.5);
+  }
+
+  .lock-row{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:12px;
+    width:100%;
+  }
+  .lock-icon{ font-size:20px; color:var(--rose); }
+  .hint{
+    font-size:12px;
+    letter-spacing:.2em;
+    color:var(--text-soft);
+    font-weight:700;
+  }
+  #secretInput{
+    width:220px;
+    text-align:center;
+    padding:12px 16px;
+    border-radius:999px;
+    border:1px solid var(--envelope-light);
+    background:#fff;
+    font-family:var(--ui-font);
+    font-size:15px;
+    color:var(--text-dark);
+    outline:none;
+    transition: border-color .2s ease, transform .2s ease;
+  }
+  #secretInput:focus{
+    border-color:var(--rose);
+  }
+  #secretInput.shake{
+    animation: shake .4s ease;
+    border-color:#C0564A;
+  }
+  @keyframes shake{
+    0%,100%{ transform:translateX(0); }
+    25%{ transform:translateX(-6px); }
+    75%{ transform:translateX(6px); }
+  }
+  #unlockBtn{
+    padding:12px 28px;
+    border-radius:999px;
+    border:none;
+    background: linear-gradient(160deg, var(--rose), var(--rose-deep));
+    color:var(--cream);
+    font-family:var(--ui-font);
+    font-weight:700;
+    font-size:14px;
+    cursor:pointer;
+    box-shadow: 0 10px 18px -8px rgba(139,64,56,.55);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  #unlockBtn:hover{ transform:translateY(-2px); }
+  #unlockBtn:active{ transform:translateY(0); }
+
+  #wrongMsg{
+    font-size:12px;
+    color:var(--rose-deep);
+    min-height:16px;
+    opacity:0;
+    transition:opacity .2s ease;
+  }
+  #wrongMsg.show{ opacity:1; }
+
+  #loveScreen{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:22px;
+    text-align:center;
+    opacity:0;
+    transform: translateY(16px);
+    pointer-events:none;
+    transition: opacity .7s ease .1s, transform .7s ease .1s;
+  }
+  #loveScreen.show{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+
+  .flowers{
+    display:flex;
+    gap:6px;
+    align-items:flex-end;
+    height:70px;
+  }
+  .flowers svg{
+    animation: sway 4.5s ease-in-out infinite;
+  }
+  .flowers svg:nth-child(2){ animation-delay:.6s; }
+  .flowers svg:nth-child(3){ animation-delay:1.2s; }
+  @keyframes sway{
+    0%,100%{ transform: rotate(-3deg) translateY(0); }
+    50%{ transform: rotate(3deg) translateY(-4px); }
+  }
+
+  .letter-title{
+    font-family: var(--display);
+    font-size:26px;
+    color:var(--rose-deep);
+  }
+  .letter-body{
+    font-family: var(--body-font);
+    font-style:italic;
+    font-size:16px;
+    line-height:2;
+    color:var(--text-dark);
+    max-width:300px;
+  }
+
+  .player{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:#fff;
+    padding:10px 16px;
+    border-radius:999px;
+    box-shadow: 0 10px 24px -14px rgba(74,54,46,.4);
+    width:min(280px, 90%);
+  }
+  #playBtn{
+    width:34px; height:34px;
+    flex:none;
+    border-radius:50%;
+    border:none;
+    background: var(--rose);
+    color:#fff;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+  }
+  .song-info{
+    text-align:right;
+    flex:1;
+    overflow:hidden;
+  }
+  .song-title{
+    font-size:13px;
+    font-weight:700;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .song-sub{
+    font-size:11px;
+    color:var(--text-soft);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <section id="lockScreen">
+    <span class="eyebrow">LOVE</span>
+    <h1 class="title">أول موقع ليا<br>ليك إنتَ ❤️</h1>
+
+    <div class="envelope" id="envelope">
+      <div class="env-back"></div>
+      <div class="env-front-left"></div>
+      <div class="env-front-right"></div>
+      <div class="env-flap"></div>
+      <div class="seal">✉</div>
+    </div>
+
+    <div class="lock-row">
+      <span class="lock-icon">🔒</span>
+      <span class="hint">اكتب الكلمة السرية</span>
+      <input type="text" id="secretInput" placeholder="الكلمة السرية...">
+      <span id="wrongMsg">مش هي، جرب تاني 🌸</span>
+      <button id="unlockBtn">افتحي المفاجأة 💌</button>
+    </div>
+  </section>
+
+  <section id="loveScreen">
+    <div class="flowers">
+      <svg width="34" height="60" viewBox="0 0 34 60"><g transform="translate(17,14)"><ellipse cx="0" cy="-10" rx="7" ry="10" fill="#F3CBD3"/><ellipse cx="9" cy="-3" rx="7" ry="10" fill="#E7A9B3" transform="rotate(72 9 -3)"/><ellipse cx="6" cy="8" rx="7" ry="10" fill="#F3CBD3" transform="rotate(144 6 8)"/><ellipse cx="-6" cy="8" rx="7" ry="10" fill="#E7A9B3" transform="rotate(216 -6 8)"/><ellipse cx="-9" cy="-3" rx="7" ry="10" fill="#F3CBD3" transform="rotate(288 -9 -3)"/><circle r="5" fill="#F0C244"/></g><line x1="17" y1="24" x2="17" y2="58" stroke="#9CB68B" stroke-width="2"/></svg>
+      <svg width="30" height="50" viewBox="0 0 30 50"><g transform="translate(15,12)"><ellipse cx="0" cy="-9" rx="6" ry="9" fill="#FEFBF7"/><ellipse cx="8" cy="-2" rx="6" ry="9" fill="#F3CBD3" transform="rotate(72 8 -2)"/><ellipse cx="5" cy="7" rx="6" ry="9" fill="#FEFBF7" transform="rotate(144 5 7)"/><ellipse cx="-5" cy="7" rx="6" ry="9" fill="#F3CBD3" transform="rotate(216 -5 7)"/><ellipse cx="-8" cy="-2" rx="6" ry="9" fill="#FEFBF7" transform="rotate(288 -8 -2)"/><circle r="4" fill="#E7A9B3"/></g><line x1="15" y1="21" x2="15" y2="48" stroke="#9CB68B" stroke-width="2"/></svg>
+      <svg width="34" height="60" viewBox="0 0 34 60"><g transform="translate(17,14)"><ellipse cx="0" cy="-10" rx="7" ry="10" fill="#E7A9B3"/><ellipse cx="9" cy="-3" rx="7" ry="10" fill="#F3CBD3" transform="rotate(72 9 -3)"/><ellipse cx="6" cy="8" rx="7" ry="10" fill="#E7A9B3" transform="rotate(144 6 8)"/><ellipse cx="-6" cy="8" rx="7" ry="10" fill="#F3CBD3" transform="rotate(216 -6 8)"/><ellipse cx="-9" cy="-3" rx="7" ry="10" fill="#E7A9B3" transform="rotate(288 -9 -3)"/><circle r="5" fill="#F0C244"/></g><line x1="17" y1="24" x2="17" y2="58" stroke="#9CB68B" stroke-width="2"/></svg>
+    </div>
+
+    <h2 class="letter-title">لأجمل حد في حياتي</h2>
+    <p class="letter-body">
+      من ساعة ما بقينا مع بعض، الدنيا بقت شكلها تاني خالص.<br>
+      عملتلك الموقع الصغير ده بإيدي، عشان تعرف قد إيه<br>
+      بفكر فيك في كل تفصيلة، حتى في أسطر الكود دي.<br>
+      بحبك ❤️
+    </p>
+
+    <div class="player">
+      <button id="playBtn">▶</button>
+      <div class="song-info">
+        <div class="song-title">حبيبي ليه</div>
+        <div class="song-sub">TUL8TE - توو ليت</div>
+      </div>
+      </div>
+    </div>
+    <audio id="audio" src="song.mp3" loop></audio>
+  </section>
+
+</div>
+
+<script>
+  // ==== غيّر الكلمة السرية من هنا ====
+  const SECRET_WORD = "رودينتي";
+  const envelope   = document.getElementById('envelope');
+  const lockScreen = document.getElementById('lockScreen');
+  const loveScreen = document.getElementById('loveScreen');
+  const input      = document.getElementById('secretInput');
+  const unlockBtn  = document.getElementById('unlockBtn');
+  const wrongMsg   = document.getElementById('wrongMsg');
+  const playBtn    = document.getElementById('playBtn');
+  const audio      = document.getElementById('audio');
+
+  function tryUnlock(){
+    const value = input.value.trim();
+    if(value === "" ) return;
+
+    if(value === SECRET_WORD){
+      envelope.classList.add('open');
+      setTimeout(() => {
+        lockScreen.classList.add('hide');
+        loveScreen.classList.add('show');
+      }, 500);
+    } else {
+      input.classList.remove('shake');
+      void input.offsetWidth;
+      input.classList.add('shake');
+      wrongMsg.classList.add('show');
+    }
+  }
+
+  unlockBtn.addEventListener('click', tryUnlock);
+  input.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter') tryUnlock();
+  });
+
+  playBtn.addEventListener('click', () => {
+    if(audio.paused){
+      audio.play().catch(() => {});
+      playBtn.textContent = '⏸';
+    } else {
+      audio.pause();
+      playBtn.textContent = '▶';
+    }
+  });
+</script>
+
+</body>
+</html>
