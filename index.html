@@ -38,10 +38,15 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    background:
+    background-color: var(--cream);
+    background-image:
       radial-gradient(circle at 20% 20%, var(--cream-deep), transparent 60%),
       radial-gradient(circle at 80% 80%, var(--cream-deep), transparent 60%),
-      var(--cream);
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M15 25c0-5-10-5-10-13c0-6 5-9 10-4c5-5 10-2 10 4c0 8-10 8-10 13z' fill='%23F3CBD3' fill-opacity='0.45'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cpath d='M45 68c0-8-16-8-16-21c0-9 8-14 16-6c8-8 16-3 16 6c0 13-16 13-16 21z' fill='%23E7A9B3' fill-opacity='0.3'/%3E%3C/svg%3E");
+    background-repeat: no-repeat, no-repeat, repeat, repeat;
+    background-size: auto, auto, 60px 60px, 90px 90px;
+    background-position: center, center, 0 0, 30px 30px;
     font-family: var(--ui-font);
     color: var(--text-dark);
     padding: 24px;
