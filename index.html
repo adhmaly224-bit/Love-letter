@@ -372,6 +372,18 @@
   }
 
   .stage{ position:relative; z-index:1; }
+
+  .typing-cursor{
+    display:inline-block;
+    width:2px;
+    margin-inline-start:2px;
+    background: currentColor;
+    animation: blinkCursor .8s steps(1) infinite;
+  }
+  @keyframes blinkCursor{
+    0%,49%{ opacity:1; }
+    50%,100%{ opacity:0; }
+  }
 </style>
 </head>
 <body>
@@ -408,16 +420,16 @@
       <svg width="34" height="60" viewBox="0 0 34 60"><g transform="translate(17,14)"><ellipse cx="0" cy="-10" rx="7" ry="10" fill="#E7A9B3"/><ellipse cx="9" cy="-3" rx="7" ry="10" fill="#F3CBD3" transform="rotate(72 9 -3)"/><ellipse cx="6" cy="8" rx="7" ry="10" fill="#E7A9B3" transform="rotate(144 6 8)"/><ellipse cx="-6" cy="8" rx="7" ry="10" fill="#F3CBD3" transform="rotate(216 -6 8)"/><ellipse cx="-9" cy="-3" rx="7" ry="10" fill="#E7A9B3" transform="rotate(288 -9 -3)"/><circle r="5" fill="#F0C244"/></g><line x1="17" y1="24" x2="17" y2="58" stroke="#9CB68B" stroke-width="2"/></svg>
     </div>
 
-    <h2 class="letter-title">لأجمل حد في حياتي</h2>
-    <p class="letter-body">
+    <h2 class="letter-title" id="letterTitle">لأجمل حد في حياتي</h2>
+    <p class="letter-body" id="letterBody">
       من ساعة ما بقينا مع بعض، الدنيا بقت شكلها تاني خالص.<br>
       عملتلك الموقع الصغير ده بإيدي، عشان تعرف قد إيه<br>
       بفكر فيك في كل تفصيلة، حتى في أسطر الكود دي.<br>
       بحبك ❤️
     </p>
 
-    <h3 class="letter-title-2">يا رودي</h3>
-    <p class="letter-body-2">
+    <h3 class="letter-title-2" id="letterTitle2">يا رودي</h3>
+    <p class="letter-body-2" id="letterBody2">
       يا رودي، اسمك لوحده بقى فرحة بتحصلي كل ما اقوله.<br>
       انتي مش بس حبيبتي، انتي أحلى حاجة حصلت في حياتي.<br>
       كل يوم بصحى وانا فاكرك، وكل ليلة بنام وانتي آخر حاجة في بالي.<br>
@@ -452,6 +464,64 @@
   const playBtn    = document.getElementById('playBtn');
   const audio      = document.getElementById('audio');
 
+  // ==== تأثير الكتابة حرف حرف (Typewriter) ====
+  const typeTargets = [
+    document.getElementById('letterTitle'),
+    document.getElementById('letterBody'),
+    document.getElementById('letterTitle2'),
+    document.getElementById('letterBody2')
+  ];
+  // نخزن النص الأصلي ونفرّغ العنصر قبل ما يبدأ التنيميشن
+  typeTargets.forEach(el => {
+    el.dataset.original = el.innerHTML;
+    el.innerHTML = '';
+  });
+
+  function typeElement(el, speed){
+    return new Promise(resolve => {
+      const parts = el.dataset.original.split(/(<br\s*\/?>)/i);
+      const cursor = document.createElement('span');
+      cursor.className = 'typing-cursor';
+      el.appendChild(cursor);
+
+      let partIndex = 0;
+      let charIndex = 0;
+
+      function typeNext(){
+        if(partIndex >= parts.length){
+          cursor.remove();
+          resolve();
+          return;
+        }
+        const part = parts[partIndex];
+        if(/^<br/i.test(part)){
+          el.insertBefore(document.createElement('br'), cursor);
+          partIndex++;
+          charIndex = 0;
+          typeNext();
+          return;
+        }
+        if(charIndex < part.length){
+          cursor.insertAdjacentText('beforebegin', part[charIndex]);
+          charIndex++;
+          setTimeout(typeNext, speed);
+        } else {
+          partIndex++;
+          charIndex = 0;
+          typeNext();
+        }
+      }
+      typeNext();
+    });
+  }
+
+  async function playTypingSequence(){
+    await typeElement(typeTargets[0], 45);
+    await typeElement(typeTargets[1], 28);
+    await typeElement(typeTargets[2], 45);
+    await typeElement(typeTargets[3], 28);
+  }
+
   function tryUnlock(){
     const value = input.value.trim();
     if(value === "" ) return;
@@ -466,6 +536,7 @@
         }).catch(() => {
           playBtn.textContent = '▶';
         });
+        playTypingSequence();
       }, 500);
     } else {
       input.classList.remove('shake');
