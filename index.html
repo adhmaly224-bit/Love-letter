@@ -11,19 +11,19 @@
 
 <style>
   :root{
-    --cream:        #FBF3EA;
-    --cream-deep:    #F1E2D2;
+    --cream:        #16264A;
+    --cream-deep:    #05070D;
     --envelope:      #CDA679;
     --envelope-dark: #AD8558;
     --envelope-light:#E4C9A4;
-    --rose:          #A9584B;
-    --rose-deep:     #8B4038;
-    --text-dark:     #4A362E;
-    --text-soft:     #8A7368;
+    --rose:          #7A1F1F;
+    --rose-deep:     #5C1414;
+    --text-dark:     #FFF3EE;
+    --text-soft:     #F6C9C0;
     --flower-pink:   #E7A9B3;
     --flower-pink-2: #F3CBD3;
     --flower-white:  #FEFBF7;
-    --gold:          #C9A227;
+    --gold:          #F4C542;
 
     --display: 'Rakkas', cursive;
     --body-font: 'Amiri', serif;
@@ -51,6 +51,11 @@
     color: var(--text-dark);
     padding: 24px;
     overflow-x:hidden;
+    animation: bgPulse 6s ease-in-out infinite;
+  }
+  @keyframes bgPulse{
+    0%,100%{ background-color: var(--cream); }
+    50%{ background-color: var(--cream-deep); }
   }
 
   .stage{
@@ -87,7 +92,7 @@
   .title{
     font-family: var(--display);
     font-size:38px;
-    color:var(--rose-deep);
+    color:var(--gold);
     text-align:center;
     line-height:1.3;
     margin: -12px 0 0 0;
@@ -158,6 +163,10 @@
   .envelope.open .seal{
     opacity:0;
     transform:translate(-50%,-50%) scale(.5);
+    animation:none;
+  }
+  .envelope.open{
+    animation:none;
   }
 
   .lock-row{
@@ -183,7 +192,7 @@
     background:#fff;
     font-family:var(--ui-font);
     font-size:15px;
-    color:var(--text-dark);
+    color:#000000;
     outline:none;
     transition: border-color .2s ease, transform .2s ease;
   }
@@ -204,12 +213,7 @@
     border-radius:999px;
     border:none;
     background: linear-gradient(160deg, var(--rose), var(--rose-deep));
-    color:var(--cream);
-    font-family:var(--ui-font);
-    font-weight:700;
-    font-size:14px;
-    cursor:pointer;
-    box-shadow: 0 10px 18px -8px rgba(139,64,56,.55);
+    color:#FFFFFF;
     transition: transform .15s ease, box-shadow .15s ease;
   }
   #unlockBtn:hover{ transform:translateY(-2px); }
@@ -217,7 +221,7 @@
 
   #wrongMsg{
     font-size:12px;
-    color:var(--rose-deep);
+    color:var(--gold);
     min-height:16px;
     opacity:0;
     transition:opacity .2s ease;
@@ -263,7 +267,7 @@
   .letter-title{
     font-family: var(--display);
     font-size:26px;
-    color:var(--rose-deep);
+    color:var(--gold);
   }
   .letter-body{
     font-family: var(--body-font);
@@ -277,7 +281,7 @@
   .letter-title-2{
     font-family: var(--display);
     font-size:22px;
-    color:var(--rose-deep);
+    color:var(--gold);
     margin-top:6px;
   }
   .letter-body-2{
@@ -323,6 +327,7 @@
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
+    color:#000000;
   }
   .song-sub{
     font-size:11px;
@@ -371,6 +376,175 @@
     100%{ transform: translateY(110vh) translateX(var(--drift,-20px)) rotate(-20deg); opacity:0; }
   }
 
+  .butterflies{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    pointer-events:none;
+    z-index:0;
+  }
+  .butterfly{
+    position:absolute;
+    bottom:-60px;
+    opacity:0;
+    will-change: transform, opacity;
+    transform-origin:center;
+  }
+  .butterfly svg{
+    display:block;
+    animation: flap .35s ease-in-out infinite alternate;
+    transform-origin:center;
+  }
+  .butterfly.rise{
+    animation-name: flyUp;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+  .butterfly.fall{
+    top:-60px;
+    bottom:auto;
+    animation-name: flyDown;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+  .butterfly.side{
+    animation-name: flySide;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+  @keyframes flap{
+    0%{ transform: scaleX(1) rotate(0deg); }
+    100%{ transform: scaleX(.55) rotate(4deg); }
+  }
+  @keyframes flyUp{
+    0%{ transform: translateY(0) translateX(0); opacity:0; }
+    8%{ opacity:.85; }
+    25%{ transform: translateY(-28vh) translateX(var(--driftA,26px)); }
+    50%{ transform: translateY(-52vh) translateX(var(--driftB,-22px)); }
+    75%{ transform: translateY(-78vh) translateX(var(--driftA,26px)); }
+    92%{ opacity:.85; }
+    100%{ transform: translateY(-112vh) translateX(var(--driftB,-22px)); opacity:0; }
+  }
+  @keyframes flyDown{
+    0%{ transform: translateY(0) translateX(0); opacity:0; }
+    8%{ opacity:.85; }
+    25%{ transform: translateY(28vh) translateX(var(--driftA,-26px)); }
+    50%{ transform: translateY(52vh) translateX(var(--driftB,22px)); }
+    75%{ transform: translateY(78vh) translateX(var(--driftA,-26px)); }
+    92%{ opacity:.85; }
+    100%{ transform: translateY(112vh) translateX(var(--driftB,22px)); opacity:0; }
+  }
+  @keyframes flySide{
+    0%{ transform: translateX(0) translateY(0); opacity:0; }
+    8%{ opacity:.85; }
+    30%{ transform: translateX(30vw) translateY(var(--driftA,-18px)); }
+    60%{ transform: translateX(60vw) translateY(var(--driftB,18px)); }
+    92%{ opacity:.85; }
+    100%{ transform: translateX(112vw) translateY(var(--driftA,-18px)); opacity:0; }
+  }
+
+  .sparkles{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    pointer-events:none;
+    z-index:0;
+  }
+  .sparkle{
+    position:absolute;
+    border-radius:50%;
+    background: var(--gold);
+    opacity:0;
+    animation-name: twinkle;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    will-change: transform, opacity;
+  }
+  @keyframes twinkle{
+    0%,100%{ opacity:0; transform:scale(.4) rotate(0deg); }
+    50%{ opacity:.9; transform:scale(1.15) rotate(180deg); }
+  }
+
+  .petals{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    pointer-events:none;
+    z-index:0;
+  }
+  .petal{
+    position:absolute;
+    top:-30px;
+    opacity:0;
+    will-change: transform, opacity;
+    animation-name: petalFall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+  @keyframes petalFall{
+    0%{ transform: translateY(0) translateX(0) rotate(0deg); opacity:0; }
+    10%{ opacity:.8; }
+    90%{ opacity:.8; }
+    100%{ transform: translateY(110vh) translateX(var(--pdrift,30px)) rotate(300deg); opacity:0; }
+  }
+
+  #loveScreen .flowers{
+    animation: popIn .6s ease .1s both;
+  }
+  #loveScreen .letter-title{
+    animation: popIn .6s ease .3s both;
+  }
+  #loveScreen .letter-title-2{
+    animation: popIn .6s ease .5s both;
+  }
+  #loveScreen .player{
+    animation: popIn .6s ease .7s both, floatBob 3s ease-in-out 1.3s infinite;
+  }
+  #loveScreen .sticker-img{
+    animation: popIn .7s ease .8s both, floatBob 3.4s ease-in-out 1.5s infinite;
+  }
+  @keyframes popIn{
+    0%{ opacity:0; transform: scale(.7) translateY(14px); }
+    70%{ opacity:1; transform: scale(1.05) translateY(-2px); }
+    100%{ opacity:1; transform: scale(1) translateY(0); }
+  }
+  @keyframes floatBob{
+    0%,100%{ transform: translateY(0); }
+    50%{ transform: translateY(-7px); }
+  }
+
+  .title{
+    animation: titleGlow 3.2s ease-in-out infinite;
+  }
+  @keyframes titleGlow{
+    0%,100%{ text-shadow: 0 0 0px rgba(201,162,39,0); }
+    50%{ text-shadow: 0 2px 18px rgba(201,162,39,.45); }
+  }
+
+  .envelope{
+    animation: envSway 3.6s ease-in-out infinite;
+  }
+  @keyframes envSway{
+    0%,100%{ transform: rotate(0deg) translateY(0); }
+    50%{ transform: rotate(1.2deg) translateY(-4px); }
+  }
+
+  #unlockBtn{
+    animation: btnPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes btnPulse{
+    0%,100%{ box-shadow: 0 10px 18px -8px rgba(139,64,56,.55); transform:translateY(0) scale(1); }
+    50%{ box-shadow: 0 14px 26px -8px rgba(139,64,56,.75); transform:translateY(-2px) scale(1.03); }
+  }
+
+  .seal{
+    animation: sealPulse 2.2s ease-in-out infinite;
+  }
+  @keyframes sealPulse{
+    0%,100%{ transform:translate(-50%,-50%) scale(1); }
+    50%{ transform:translate(-50%,-50%) scale(1.08); }
+  }
+
   .sticker-img{
     width:150px;
     height:auto;
@@ -397,6 +571,9 @@
 <body>
 
 <div class="floating-hearts" id="floatingHearts"></div>
+<div class="butterflies" id="floatingButterflies"></div>
+<div class="sparkles" id="floatingSparkles"></div>
+<div class="petals" id="floatingPetals"></div>
 
 <div class="stage">
 
@@ -573,7 +750,7 @@
 
   // ==== قلوب متحركة في الخلفية ====
   const heartsContainer = document.getElementById('floatingHearts');
-  const HEART_COUNT = 16;
+  const HEART_COUNT = 26;
   for(let i = 0; i < HEART_COUNT; i++){
     const heart = document.createElement('span');
     heart.className = 'heart ' + (Math.random() > 0.5 ? 'up' : 'down');
@@ -590,6 +767,97 @@
     heart.style.animationDelay = delay + 's';
     heart.style.setProperty('--drift', drift);
     heartsContainer.appendChild(heart);
+  }
+
+  // ==== فراشات كتير طايرة في الخلفية ====
+  const butterflyColors = [
+    ['#E7A9B3', '#F3CBD3'],
+    ['#A9584B', '#E9CFA9'],
+    ['#C9A227', '#FEFBF7'],
+    ['#8B4038', '#E7A9B3'],
+    ['#CDA679', '#F3CBD3']
+  ];
+  function butterflySVG(c1, c2, size){
+    return `<svg width="${size}" height="${size*0.7}" viewBox="0 0 40 28" xmlns="http://www.w3.org/2000/svg">
+      <g>
+        <path d="M20 14 C14 2, 2 2, 2 10 C2 16, 12 17, 20 14Z" fill="${c1}"/>
+        <path d="M20 14 C26 2, 38 2, 38 10 C38 16, 28 17, 20 14Z" fill="${c2}"/>
+        <path d="M20 14 C15 20, 6 22, 6 26 C6 28, 14 27, 20 15Z" fill="${c2}" opacity=".85"/>
+        <path d="M20 14 C25 20, 34 22, 34 26 C34 28, 26 27, 20 15Z" fill="${c1}" opacity=".85"/>
+        <line x1="20" y1="6" x2="20" y2="18" stroke="#4A362E" stroke-width="1.2"/>
+      </g>
+    </svg>`;
+  }
+  const butterflyContainer = document.getElementById('floatingButterflies');
+  const BUTTERFLY_COUNT = 40;
+  const flightTypes = ['rise', 'fall', 'side'];
+  for(let i = 0; i < BUTTERFLY_COUNT; i++){
+    const wrap = document.createElement('span');
+    const type = flightTypes[Math.floor(Math.random() * flightTypes.length)];
+    wrap.className = 'butterfly ' + type;
+    const [c1, c2] = butterflyColors[Math.floor(Math.random() * butterflyColors.length)];
+    const size = 20 + Math.random() * 26;
+    wrap.innerHTML = butterflySVG(c1, c2, size);
+
+    const duration = 9 + Math.random() * 10;
+    const delay = Math.random() * -20;
+    const driftA = (Math.random() * 70 - 35) + 'px';
+    const driftB = (Math.random() * 70 - 35) + 'px';
+    wrap.style.setProperty('--driftA', driftA);
+    wrap.style.setProperty('--driftB', driftB);
+    wrap.style.animationDuration = duration + 's';
+    wrap.style.animationDelay = delay + 's';
+
+    if(type === 'side'){
+      wrap.style.left = '-8vw';
+      wrap.style.top = (Math.random() * 100) + 'vh';
+      wrap.style.bottom = 'auto';
+    } else {
+      wrap.style.left = (Math.random() * 100) + 'vw';
+    }
+
+    const flapSpeed = (0.28 + Math.random() * 0.25) + 's';
+    wrap.querySelector('svg').style.animationDuration = flapSpeed;
+
+    butterflyContainer.appendChild(wrap);
+  }
+
+  // ==== لمعات صغيرة متلألئة في الخلفية ====
+  const sparkleContainer = document.getElementById('floatingSparkles');
+  const SPARKLE_COUNT = 45;
+  for(let i = 0; i < SPARKLE_COUNT; i++){
+    const sparkle = document.createElement('span');
+    sparkle.className = 'sparkle';
+    const size = 3 + Math.random() * 5;
+    sparkle.style.width = size + 'px';
+    sparkle.style.height = size + 'px';
+    sparkle.style.left = (Math.random() * 100) + 'vw';
+    sparkle.style.top = (Math.random() * 100) + 'vh';
+    sparkle.style.animationDuration = (1.8 + Math.random() * 2.6) + 's';
+    sparkle.style.animationDelay = (Math.random() * -4) + 's';
+    sparkleContainer.appendChild(sparkle);
+  }
+
+  // ==== بتلات ورد نازلة ====
+  const petalContainer = document.getElementById('floatingPetals');
+  const PETAL_COUNT = 22;
+  function petalSVG(color, size){
+    return `<svg width="${size}" height="${size}" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 2C14 2 18 6 18 10C18 14 14 18 10 18C6 18 2 14 2 10C2 6 6 2 10 2Z" fill="${color}"/>
+    </svg>`;
+  }
+  const petalColors = ['#F3CBD3', '#E7A9B3', '#FEFBF7', '#F4C542'];
+  for(let i = 0; i < PETAL_COUNT; i++){
+    const petal = document.createElement('span');
+    petal.className = 'petal';
+    const size = 10 + Math.random() * 12;
+    const color = petalColors[Math.floor(Math.random() * petalColors.length)];
+    petal.innerHTML = petalSVG(color, size);
+    petal.style.left = (Math.random() * 100) + 'vw';
+    petal.style.setProperty('--pdrift', (Math.random() * 80 - 40) + 'px');
+    petal.style.animationDuration = (6 + Math.random() * 7) + 's';
+    petal.style.animationDelay = (Math.random() * -12) + 's';
+    petalContainer.appendChild(petal);
   }
 
 </script>
